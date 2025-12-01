@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>✏️ Update Product</title>
+  <style>
+    body { font-family: 'Comic Sans MS', cursive; background: #e0f7fa; margin:0; text-align:center; }
+    nav { background: #26c6da; padding: 10px; display:flex; justify-content:center; gap:15px; }
+    nav a { color:white; font-weight:bold; text-decoration:none; padding:6px 12px; border-radius:5px; }
+    nav a:hover { background:#00acc1; }
+    h1 { margin:20px 0; color:#007c91; }
+    form { background:#ffffff; display:inline-block; padding:25px; border-radius:12px; box-shadow:0 4px 8px rgba(0,0,0,0.1);}
+    label { display:block; margin:10px 0 5px; font-weight:bold; }
+    input { width:100%; padding:8px; margin-bottom:15px; border-radius:6px; border:1px solid #ccc; }
+    button { padding:10px 16px; border:none; border-radius:6px; cursor:pointer; background:#26c6da; color:white; font-weight:bold; margin-right:8px; }
+    button:hover { background:#00acc1; }
+    #response { margin-top:15px; padding:10px; border-radius:6px; display:none; }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html">🏠 Home</a>
+  <a href="UpdateProduct.html">✏️ Update</a>
+  <a href="DeleteProduct.html">🗑️ Delete</a>
+  <a href="GetAllProduct.html">📋 All Products</a>
+  <a href="GetProductById.html">🔍 By ID</a>
+</nav>
+
+<h1>✏️ Update Product</h1>
+<form id="updateForm">
+  <label>Product ID</label>
+  <input type="number" id="id" required>
+  <label>Name</label>
+  <input type="text" id="name">
+  <label>Category</label>
+  <input type="text" id="category">
+  <label>Price</label>
+  <input type="number" id="price" step="0.01">
+  <label>Quantity</label>
+  <input type="number" id="quantity">
+  <label>Status (active: yes/no)</label>
+  <input type="text" id="status">
+  <button type="submit">Update</button>
+  <button type="button" onclick="resetForm()">🔄 Reset</button>
+</form>
+
+<div id="response"></div>
+
+<script>
+  const form = document.getElementById("updateForm");
+  const response = document.getElementById("response");
+
+  form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const product = {
+          id: parseInt(document.getElementById("id").value),
+          name: document.getElementById("name").value,
+          category: document.getElementById("category").value,
+          price: document.getElementById("price").value ? parseFloat(document.getElementById("price").value) : undefined,
+          quantity: document.getElementById("quantity").value ? parseInt(document.getElementById("quantity").value) : undefined,
+          status: document.getElementById("status").value
+      };
+      try {
+          const res = await fetch("http://localhost:8080/update", {
+              method:"PUT", headers:{"Content-Type":"application/json"}, body:JSON.stringify(product)
+          });
+          const data = await res.json();
+          response.textContent = data.name ? `✅ Product ${data.name} updated!` : `❌ Product not found`;
+          response.style.display="block";
+          form.reset();
+      } catch(err) {
+          response.textContent = "❌ Error: " + err;
+          response.style.display="block";
+      }
+  });
+
+  function resetForm() {
+      form.reset();
+      response.style.display="none";
+  }
+</script>
+</body>
+</html>

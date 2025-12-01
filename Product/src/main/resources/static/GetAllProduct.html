@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>📋 All Products</title>
+  <style>
+    body { font-family:'Comic Sans MS', cursive; background:#e8f5e9; margin:0; text-align:center; }
+    nav { background:#66bb6a; padding:10px; display:flex; justify-content:center; gap:15px; }
+    nav a { color:white; font-weight:bold; text-decoration:none; padding:6px 12px; border-radius:5px; }
+    nav a:hover { background:#43a047; }
+    h1 { margin:20px 0; color:#2e7d32; }
+    table { margin:20px auto; border-collapse: collapse; width:90%; background:white; border-radius:8px; overflow:hidden;}
+    th, td { border:1px solid #ccc; padding:10px; text-align:center; }
+    th { background:#a5d6a7; }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html">🏠 Home</a>
+  <a href="UpdateProduct.html">✏️ Update</a>
+  <a href="DeleteProduct.html">🗑️ Delete</a>
+  <a href="GetAllProduct.html">📋 All Products</a>
+  <a href="GetProductById.html">🔍 By ID</a>
+</nav>
+
+<h1>📋 All Products</h1>
+<button onclick="loadProducts()">🔄 Refresh</button>
+<table id="productTable">
+  <thead>
+  <tr>
+    <th>ID</th><th>Name</th><th>Category</th><th>Price</th><th>Quantity</th><th>Created Date</th><th>Status</th>
+  </tr>
+  </thead>
+  <tbody></tbody>
+</table>
+
+<script>
+  async function loadProducts() {
+      const tbody = document.querySelector("#productTable tbody");
+      tbody.innerHTML = "";
+      try {
+          const res = await fetch("http://localhost:8080/getAllProduct");
+          const products = await res.json();
+          products.forEach(p => {
+              const row = `<tr>
+                  <td>${p.id}</td>
+                  <td>${p.name}</td>
+                  <td>${p.category}</td>
+                  <td>${p.price}</td>
+                  <td>${p.quantity}</td>
+                  <td>${new Date(p.createdDate).toLocaleString()}</td>
+                  <td>${p.isActive ? "Yes" : "No"}</td>
+              </tr>`;
+              tbody.innerHTML += row;
+          });
+      } catch(err) {
+          tbody.innerHTML = `<tr><td colspan="7">❌ Error fetching products</td></tr>`;
+      }
+  }
+
+  loadProducts();
+</script>
+</body>
+</html>

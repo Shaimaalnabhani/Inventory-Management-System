@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🌈 Product Management Hub</title>
+    <style>
+        body {
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            background: linear-gradient(135deg, #fceabb, #f8b500);
+            margin: 0;
+            text-align: center;
+        }
+        header {
+            background: #ff6f61;
+            color: white;
+            padding: 20px;
+            font-size: 28px;
+            font-weight: bold;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        .menu {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin: 40px 0;
+            gap: 20px;
+        }
+        .card {
+            background: #ffe0ac;
+            width: 180px;
+            padding: 20px;
+            border-radius: 15px;
+            cursor: pointer;
+            font-size: 18px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: 0.3s;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            background: #ff9f1c;
+            color: white;
+        }
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+    </style>
+</head>
+<body>
+
+<header>🌟 Product Management Hub 🌟</header>
+
+<div class="menu">
+    <a href="CreateProduct.html"><div class="card">➕ Create Product</div></a>
+    <a href="UpdateProduct.html"><div class="card">✏️ Update Product</div></a>
+    <a href="DeleteProduct.html"><div class="card">🗑️ Delete Product</div></a>
+    <a href="GetAllProduct.html"><div class="card">📋 View All</div></a>
+    <a href="GetProductById.html"><div class="card">🔍 Get by ID</div></a>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🔍 Get Product By ID</title>
+  <style>
+    body { font-family:'Comic Sans MS', cursive; background:#f3e5f5; margin:0; text-align:center; }
+    nav { background:#ab47bc; padding:10px; display:flex; justify-content:center; gap:15px; }
+    nav a { color:white; font-weight:bold; text-decoration:none; padding:6px 12px; border-radius:5px; }
+    nav a:hover { background:#8e24aa; }
+    h1 { margin:20px 0; color:#6a1b9a; }
+    form { background:white; display:inline-block; padding:25px; border-radius:12px; box-shadow:0 4px 8px rgba(0,0,0,0.1); }
+    input { width:100%; padding:8px; margin-bottom:15px; border-radius:6px; border:1px solid #ccc; }
+    button { padding:10px 16px; border:none; border-radius:6px; cursor:pointer; background:#ab47bc; color:white; font-weight:bold; margin-right:8px; }
+    button:hover { background:#8e24aa; }
+    #productDetails { margin-top:15px; display:none; text-align:left; background:#f3e5f5; padding:10px; border-radius:8px; width:300px; margin-left:auto; margin-right:auto; }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html">🏠 Home</a>
+  <a href="UpdateProduct.html">✏️ Update</a>
+  <a href="DeleteProduct.html">🗑️ Delete</a>
+  <a href="GetAllProduct.html">📋 All Products</a>
+  <a href="GetProductById.html">🔍 By ID</a>
+</nav>
+
+<h1>🔍 Get Product By ID</h1>
+<form id="getForm">
+  <input type="number" id="id" placeholder="Enter Product ID" required>
+  <button type="submit">Fetch</button>
+  <button type="button" onclick="resetForm()">🔄 Reset</button>
+</form>
+
+<div id="productDetails"></div>
+
+<script>
+  const form = document.getElementById("getForm");
+  const details = document.getElementById("productDetails");
+
+  form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const id = parseInt(document.getElementById("id").value);
+      try {
+          const res = await fetch(`http://localhost:8080/getById/${id}`);
+          const p = await res.json();
+          if(!p.id) { details.innerHTML="❌ Product not found"; details.style.display="block"; return; }
+          details.innerHTML = `<b>ID:</b> ${p.id}<br>
+                               <b>Name:</b> ${p.name}<br>
+                               <b>Category:</b> ${p.category}<br>
+                               <b>Price:</b> ${p.price}<br>
+                               <b>Quantity:</b> ${p.quantity}<br>
+                               <b>Created Date:</b> ${new Date(p.createdDate).toLocaleString()}<br>
+                               <b>Status:</b> ${p.isActive ? "Yes" : "No"}`;
+          details.style.display="block";
+      } catch(err) {
+          details.innerHTML = "❌ Error fetching product: " + err;
+          details.style.display="block";
+      }
+  });
+
+  function resetForm() {
+      form.reset();
+      details.style.display="none";
+  }
+</script>
+
+</body>
+</html>
